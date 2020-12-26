@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="eu">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head>
+    <meta charset="utf-8"/>
+
+    <title>AllProducts</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Details</h1>
+    <p><span th:text="${'ID: ' + selectedProduct.id}"/></p>
+    <p><span th:text="${'Title: ' + selectedProduct.title}"/></p>
+    <p><span th:text="${'Price: ' + selectedProduct.price}"/></p>
+    <p><span th:if="${selectedProduct.description == ''}">Selected item has no description</span></p>
+    <p><span th:if="${selectedProduct.description != ''}" th:text="${'Description: ' + selectedProduct.description}"/></p>
+    <p>
+<!--        <a class="btn btn-secondary" href="#" onclick="history.back();">Back</a>-->
+        <a class="btn btn-secondary" th:href="@{'/shop'}" >Back to Shop</a>
+        <a class="btn btn-success" th:href="@{'/cart/add/' + ${selectedProduct.id}}">Add to Cart</a>
+        <br><a sec:authorize="hasRole('ADMIN')" class="btn btn-success" style="background-color: #ffc107; border-color: #ffc107; margin-top: 1rem"  th:href="@{'/edit_product/' + ${selectedProduct.id}}">Edit details</a>
+    </p>
+</div>
+
+</body>
+
+</html>

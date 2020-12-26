@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8"/>
+
+    <title>AllProducts</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(order_items)}"/> <!-- Navbar -->
+
+    <h1>Orders</h1>
+    <span th:if="${items.size() == 0}">There are no orders right now</span>
+    <table th:if="${items.size() > 0}" class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <td>Order ID</td>
+            <td>Product ID</td>
+            <td>Title</td>
+            <td>Price</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item, i : ${items}">
+            <td th:text="${item.order.id}"></td>
+            <td th:text="${item.product.id}"></td>
+            <td th:text="${item.product.title}"></td>
+            <td th:text="${item.totalPrice}"></td>
+            <td><a class="btn btn-secondary" th:href="@{'/shop/details/' + ${item.product.id}}">Details</a></td>
+            <td><a class="btn btn-danger" sec:authorize="hasRole('ADMIN')" th:href="@{'/admin/order_items/delete/' + ${item.id} + '?orderId=' + ${item.order.id}}">Delete</a></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+
+</html>

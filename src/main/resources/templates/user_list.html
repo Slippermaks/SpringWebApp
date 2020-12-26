@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8"/>
+
+    <title>AllProducts</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <style>
+        .red { color:red; }
+        .green { color:green; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Shop)}"/> <!-- Navbar -->
+
+    <h1>Users</h1>
+    <span th:if="${users.size() == 0}">There are no registered users</span>
+    <table th:if="${users.size() > 0}" class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <td>Username</td>
+            <td>Enabled</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}"></td>
+            <td th:if="${user.enabled}" class="green" th:text="${user.enabled}"></td>
+            <td th:if="${!user.enabled}" class="red" th:text="${user.enabled}"></td>
+            <td th:if="${!user.enabled && !user.username.equals(authorizedUserUsername)}"><a class="btn btn-success" sec:authorize="hasRole('ADMIN')" th:href="@{'/admin/user_list/enable/' + ${user.username}}">Enable</a></td>
+            <td th:if="${user.enabled && !user.username.equals(authorizedUserUsername)}"><a class="btn btn-danger" sec:authorize="hasRole('ADMIN')" th:href="@{'/admin/user_list/disable/' + ${user.username}}">Disable</a></td>
+            <td th:if="${!user.username.equals(authorizedUserUsername)}" ><a class="btn btn-danger" sec:authorize="hasRole('ADMIN')" th:href="@{'/admin/user_list/delete/' + ${user.username}}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+
+</html>
